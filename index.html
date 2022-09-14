@@ -10,6 +10,23 @@
 
 		<!-- alpine js -->
 		<script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+		<!-- chart js cdn -->
+		<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+
+		<!-- google fonts -->
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap"
+			rel="stylesheet"
+		/>
+
+		<style>
+			body {
+				font-family: "Montserrat", sans-serif;
+			}
+		</style>
 	</head>
 	<body>
 		<main>
@@ -171,21 +188,147 @@
 					<p class="font-medium text-gray-600">Pregnancy & Family</p>
 				</div>
 			</div>
+
+			<section class="my-20 py-8">
+				<h3
+					class="text-xl uppercase text-center text-green-600 p-4 border-4 border-blue-600 rounded-md w-fit mx-auto -mb-6 bg-white relative z-20 font-bold"
+				>
+					LEADERBOARD
+				</h3>
+				<div class="max-w-2xl mx-auto relative rounded-xl pt-12 border-4 border-blue-600">
+					<table class="w-full sm:rounded-xl overflow-x-auto">
+						<tbody id="leaderboard" class="rounded-xl"></tbody>
+					</table>
+				</div>
+			</section>
+
+			<section>
+				<div class="max-w-2xl mx-auto">
+					<canvas id="myChart" height="250">
+						<p>Fetching Age Data</p>
+					</canvas>
+				</div>
+			</section>
 		</main>
 
 		<script>
+			const fakeData = [
+				["DP", "Name", "points"],
+				["/img/dp.jpg", "James kona", 9],
+				["/img/dp.jpg", "Ula Bam", 8],
+				["/img/dp.jpg", "Jane Doe", 6],
+				["/img/dp.jpg", "Emma adam", 4],
+				["/img/dp.jpg", "Kim jon", 4],
+			];
+
+			createTable(fakeData);
+
 			getSheet();
 			async function getSheet() {
 				try {
 					const res = await fetch(
-						"https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit?usp=sharing"
+						"https://script.google.com/macros/s/AKfycbyODNGB2XAFgu-4uq81gJzwewCYc8mFp9QhYplkaVYmlQGapOSS0Qt0ohYLB9wI7Kpv/exec"
 					);
-					const data = await res.body;
-					console.log(res);
-				} catch (e) {
-					console.log(e);
+
+					const data = await res.json();
+
+					getAgeData(data.ageValues);
+
+					//	console.log(data);
+				} catch (error) {
+					console.log(error);
 				}
 			}
+
+			function createTable(leaderBoardData) {
+				const theTable = document.getElementById("leaderboard");
+				leaderBoardData.forEach((row, index) => {
+					// don't display the 1st row, that is the 1st column
+					if (index === 0) return;
+					const tableRow = document.createElement("tr");
+					tableRow.classList = "odd:bg-blue-50 even:bg-gray-50  my-2";
+					const indexColoumn = document.createElement("td");
+					rank = index;
+					indexColoumn.innerHTML = getBadge(rank);
+					tableRow.appendChild(indexColoumn);
+					row.forEach((rowData, index) => {
+						const tableColoumn = document.createElement("td");
+						tableColoumn.classList = ` text-gray-600 p-3 text-center  font-semibold last:font-extrabold`;
+						if (index === 0) {
+							const imgTag = document.createElement("img");
+							imgTag.src = rowData;
+							imgTag.classList = " h-12 w-12 mx-auto rounded-full border-4 border-blue-600";
+							tableColoumn.appendChild(imgTag);
+						} else {
+							tableColoumn.textContent = rowData;
+						}
+						tableRow.appendChild(tableColoumn);
+					});
+					theTable.appendChild(tableRow);
+				});
+			}
+
+			function getBadge(rank) {
+				switch (rank) {
+					case 1:
+						return `<img src="/img/badge1.png" class="h-12 w-12 mx-auto">`;
+					case 2:
+						return `<img src="/img/badge2.png" class="h-12 w-12 mx-auto">`;
+					case 3:
+						return `<img src="/img/badge3.png" class="h-12 w-12 mx-auto">`;
+
+					default:
+						return `<p class='text-center'>${rank}</p>`;
+				}
+			}
+
+			const ctx = document.getElementById("myChart").getContext("2d");
+
+			const getAgeData = (ageData) => {
+				let genderLabels = [];
+				let genderValues = [];
+				ageData.forEach((dataRow) => {
+					genderLabels.push(dataRow[0]);
+					genderValues.push(dataRow[1]);
+				});
+
+				createGenderChart(genderLabels, genderValues);
+			};
+
+			const createGenderChart = (labels, values) => {
+				const myChart = new Chart(ctx, {
+					type: "bar",
+					data: {
+						labels,
+						datasets: [
+							{
+								label: "Gender Distribution",
+								data: values,
+								backgroundColor: ["purple", "blue", "orange"],
+								borderColor: ["purple", "blue", "orange"],
+								borderWidth: 2,
+							},
+						],
+					},
+					options: {
+						scales: {
+							y: {
+								beginAtZero: true,
+							},
+						},
+						plugins: {
+							legend: {
+								labels: {
+									// This more specific font property overrides the global property
+									font: {
+										size: 22,
+									},
+								},
+							},
+						},
+					},
+				});
+			};
 		</script>
 	</body>
 </html>
