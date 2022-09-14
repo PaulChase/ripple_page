@@ -1,0 +1,12 @@
+{
+	"name": "ripplepage",
+	"version": "1.0.0",
+	"description": "",
+	"main": "tailwind.config.js",
+	"scripts": {
+		"watch": "./tailwindcss -i ./css/app.css -o ./dist/app.css --watch"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC"
+}
