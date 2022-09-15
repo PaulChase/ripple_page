@@ -28,7 +28,7 @@
 			}
 		</style>
 	</head>
-	<body>
+	<body class="bg-gray-50">
 		<main>
 			<!-- top Nav -->
 			<nav class="p-3" x-data="{ isNavOpen: false}">
@@ -37,7 +37,7 @@
 					<img src="/img/logo.png" alt="" class="lg:h-12 h-10" />
 
 					<div
-						class="lg:flex lg:static lg:flex-row lg:items-center lg:w-auto lg:p-0 lg:space-y-0 lg:text-lg space-x-6 fixed z-20 top-0 left-0 w-full h-full bg-white flex-col p-10 justify-start space-y-8 text-center text-2xl overflow-y-auto lg:overflow-y-visible text-gray-500"
+						class="lg:flex lg:static lg:flex-row lg:items-center lg:w-auto lg:p-0 lg:space-y-0 lg:text-lg space-x-6 fixed z-50 top-0 left-0 w-full h-full bg-white flex-col p-10 justify-start space-y-8 text-center text-2xl overflow-y-auto lg:overflow-y-visible text-gray-500"
 						x-cloak
 						x-bind:class="isNavOpen ? 'flex' : 'hidden'"
 					>
@@ -141,9 +141,9 @@
 				class="relative flex justify-center items-center px-4 py-8"
 			>
 				<div class="absolute top-0 left-0 w-full h-full bg-black/60"></div>
-				<div class="z-20 text-white relative h-full w-3/5 mx-auto space-y-6 mb-10">
-					<h1 class="text-5xl font-bold text-center text-orange-600">About the Ripple Project</h1>
-					<p class="text-xl font-medium leading-9">
+				<div class="z-20 text-white relative h-full lg:w-3/5 mx-auto space-y-6 mb-10">
+					<h1 class="md:text-5xl text-3xl font-bold text-center text-orange-600">About the Ripple Project</h1>
+					<p class="md:text-xl text-base font-medium leading-9">
 						The Ripple project is focused on identifying, engaging and building the capacity of young people to serve as
 						peer educators on the prevention of Gender Based Violence (GBV) and harmful practices (HP) and in promoting
 						Sexual and Reproductive Health and Rights (SRHR) in Nigeria. The Ripple project is currently been
@@ -159,14 +159,16 @@
 						>
 						<a
 							href="#"
-							class="px-10 py-3 font-semibold text-yellow-500 rounded-lg text-center inline-block border-2 border-yellow-500"
+							class="px-10 py-3 font-semibold text-yellow-500 rounded-lg text-center inline-block border-4 border-yellow-500"
 							>Read more...</a
 						>
 					</div>
 				</div>
 			</section>
 
-			<div class="flex justify-evenly items-center w-4/5 mx-auto shadow rounded-md p-6 -m-14 z-50 relative bg-white">
+			<div
+				class="lg:flex grid grid-cols-2 gap-6 lg:justify-evenly lg:items-center w-11/12 md:w-4/5 mx-auto shadow rounded-md p-6 -m-14 z-30 relative bg-white"
+			>
 				<div class="space-y-3 text-center">
 					<h3 class="text-4xl font-bold text-orange-500">22</h3>
 					<p class="font-medium text-gray-600">Total Educated</p>
@@ -189,29 +191,44 @@
 				</div>
 			</div>
 
-			<section class="my-20 py-8">
+			<section class="p-4 mt-20">
+				<div class="max-w-2xl mx-auto">
+					<h3 class="text-lg md:text-2xl text-orange-600 font-semibold mb-4 text-center">
+						Gender Distributiuon of Peers Educated
+					</h3>
+					<canvas id="genderChart" height="240">
+						<p>Fetching Gender Data</p>
+					</canvas>
+				</div>
+			</section>
+
+			<section class="p-4 my-4 md:my-12">
+				<div class="max-w-2xl mx-auto">
+					<h3 class="text-lg md:text-2xl text-orange-600 font-semibold mb-4 text-center">
+						Age Distribution of Peers Reached
+					</h3>
+					<canvas id="ageChart" height="240">
+						<p>Fetching Age Data</p>
+					</canvas>
+				</div>
+			</section>
+
+			<section class="my-4 p-4">
 				<h3
 					class="text-xl uppercase text-center text-green-600 p-4 border-4 border-blue-600 rounded-md w-fit mx-auto -mb-6 bg-white relative z-20 font-bold"
 				>
 					LEADERBOARD
 				</h3>
-				<div class="max-w-2xl mx-auto relative rounded-xl pt-12 border-4 border-blue-600">
+				<div class="max-w-3xl mx-auto relative rounded-xl pt-12 border-4 border-blue-600">
 					<table class="w-full sm:rounded-xl overflow-x-auto">
 						<tbody id="leaderboard" class="rounded-xl"></tbody>
 					</table>
 				</div>
 			</section>
-
-			<section>
-				<div class="max-w-2xl mx-auto">
-					<canvas id="myChart" height="250">
-						<p>Fetching Age Data</p>
-					</canvas>
-				</div>
-			</section>
 		</main>
 
 		<script>
+			/*
 			const fakeData = [
 				["DP", "Name", "points"],
 				["/img/dp.jpg", "James kona", 9],
@@ -222,17 +239,32 @@
 			];
 
 			createTable(fakeData);
+			*/
 
 			getSheet();
 			async function getSheet() {
 				try {
 					const res = await fetch(
-						"https://script.google.com/macros/s/AKfycbyODNGB2XAFgu-4uq81gJzwewCYc8mFp9QhYplkaVYmlQGapOSS0Qt0ohYLB9wI7Kpv/exec"
+						"https://script.google.com/macros/s/AKfycbyVjgW-KV5mH_bN1trgV95C194TY-Et__VCU7KWzeZleAvUpbQd2seAsoWU9CdXE8oj/exec"
 					);
 
 					const data = await res.json();
 
-					getAgeData(data.ageValues);
+					createTable(data.leaderBoardValues);
+
+					getLabeslAndValues(data.genderValues, {
+						type: "bar",
+						label: "Gender distribution",
+						backgroundColor: ["purple", "blue", "orange"],
+						elementID: "genderChart",
+					});
+
+					getLabeslAndValues(data.ageValues, {
+						type: "doughnut",
+						label: "Age distribution",
+						backgroundColor: ["pink", "blue", "orange", "green", "yellow"],
+						elementID: "ageChart",
+					});
 
 					//	console.log(data);
 				} catch (error) {
@@ -243,7 +275,7 @@
 			function createTable(leaderBoardData) {
 				const theTable = document.getElementById("leaderboard");
 				leaderBoardData.forEach((row, index) => {
-					// don't display the 1st row, that is the 1st column
+					// don't display the 1st row, that is the title rows
 					if (index === 0) return;
 					const tableRow = document.createElement("tr");
 					tableRow.classList = "odd:bg-blue-50 even:bg-gray-50  my-2";
@@ -282,30 +314,31 @@
 				}
 			}
 
-			const ctx = document.getElementById("myChart").getContext("2d");
-
-			const getAgeData = (ageData) => {
-				let genderLabels = [];
-				let genderValues = [];
-				ageData.forEach((dataRow) => {
-					genderLabels.push(dataRow[0]);
-					genderValues.push(dataRow[1]);
+			const getLabeslAndValues = (givenData, options) => {
+				let labels = [];
+				let values = [];
+				givenData.forEach((dataRow) => {
+					labels.push(dataRow[0]);
+					values.push(dataRow[1]);
 				});
 
-				createGenderChart(genderLabels, genderValues);
+				createChart(labels, values, options);
 			};
 
-			const createGenderChart = (labels, values) => {
+			const createChart = (labels, values, options) => {
+				const { type, label, backgroundColor, elementID } = options;
+
+				const ctx = document.getElementById(elementID).getContext("2d");
+
 				const myChart = new Chart(ctx, {
-					type: "bar",
+					type,
 					data: {
 						labels,
 						datasets: [
 							{
-								label: "Gender Distribution",
+								label,
 								data: values,
-								backgroundColor: ["purple", "blue", "orange"],
-								borderColor: ["purple", "blue", "orange"],
+								backgroundColor,
 								borderWidth: 2,
 							},
 						],
@@ -321,7 +354,7 @@
 								labels: {
 									// This more specific font property overrides the global property
 									font: {
-										size: 22,
+										size: 18,
 									},
 								},
 							},
