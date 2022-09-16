@@ -9,7 +9,7 @@
 		<link rel="stylesheet" href="/dist/app.css" />
 
 		<!-- alpine js -->
-		<script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+		<!-- <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script> -->
 
 		<!-- chart js cdn -->
 		<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
@@ -26,115 +26,21 @@
 			body {
 				font-family: "Montserrat", sans-serif;
 			}
+
+			tr > td:last-of-type > p {
+				color: white;
+				font-size: 25px;
+				padding: 2px 12px;
+				border-radius: 10px;
+				background-color: #3366ff;
+				display: inline-flex;
+				justify-content: center;
+				align-items: center;
+			}
 		</style>
 	</head>
 	<body class="bg-gray-50">
 		<main>
-			<!-- top Nav -->
-			<nav class="p-3" x-data="{ isNavOpen: false}">
-				<div class="max-w-[90rem] mx-auto flex justify-between items-center">
-					<!-- logo  -->
-					<img src="/img/logo.png" alt="" class="lg:h-12 h-10" />
-
-					<div
-						class="lg:flex lg:static lg:flex-row lg:items-center lg:w-auto lg:p-0 lg:space-y-0 lg:text-lg space-x-6 fixed z-50 top-0 left-0 w-full h-full bg-white flex-col p-10 justify-start space-y-8 text-center text-2xl overflow-y-auto lg:overflow-y-visible text-gray-500"
-						x-cloak
-						x-bind:class="isNavOpen ? 'flex' : 'hidden'"
-					>
-						<div class="flex items-center justify-end lg:hidden">
-							<button @click="isNavOpen = false">
-								<svg
-									xmlns="http://www.w3.org/2000/svg"
-									class="h-10 w-10"
-									fill="none"
-									viewBox="0 0 24 24"
-									stroke="gray"
-									stroke-width="2"
-								>
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
-									/>
-								</svg>
-							</button>
-						</div>
-
-						<a href="#" class="font-semibold"> Home</a>
-
-						<a href="#" class="font-semibold"> Nigerian Laws</a>
-						<a href="#" class="font-semibold"> Discussion Forum</a>
-
-						<!-- dropdown one -->
-						<div class="flex flex-col space-y-8 lg:relative" x-data="{ isSubMenuOpen: false }">
-							<button
-								@click="isSubMenuOpen = !isSubMenuOpen"
-								class="font-semibold flex items-center justify-center space-x-2"
-							>
-								<span>Directories</span>
-								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
-									<path
-										fill-rule="evenodd"
-										d="M12.53 16.28a.75.75 0 01-1.06 0l-7.5-7.5a.75.75 0 011.06-1.06L12 14.69l6.97-6.97a.75.75 0 111.06 1.06l-7.5 7.5z"
-										clip-rule="evenodd"
-									/>
-								</svg>
-							</button>
-							<div
-								class="flex flex-col space-y-8 lg:items-start lg:absolute lg:bg-gray-50 lg:rounded-lg lg:py-4 lg:px-6 lg:shadow-lg top-2"
-								style="z-index: 999999999"
-								x-show="isSubMenuOpen"
-								@click.outside="isSubMenuOpen = false"
-							>
-								<a href="/pages/employment_test.html" class="font-semibold whitespace-nowrap"> Employment test</a>
-								<a href="/pages/recruitment.html" class="font-semibold"> Recruitment</a>
-							</div>
-						</div>
-
-						<!-- dropdown two -->
-						<div class="flex flex-col space-y-8 lg:relative" x-data="{ isSubMenuOpen: false }">
-							<button
-								@click="isSubMenuOpen = !isSubMenuOpen"
-								class="font-semibold flex items-center justify-center space-x-2"
-							>
-								<span>Read Posts</span>
-								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
-									<path
-										fill-rule="evenodd"
-										d="M12.53 16.28a.75.75 0 01-1.06 0l-7.5-7.5a.75.75 0 011.06-1.06L12 14.69l6.97-6.97a.75.75 0 111.06 1.06l-7.5 7.5z"
-										clip-rule="evenodd"
-									/>
-								</svg>
-							</button>
-							<div
-								class="flex flex-col space-y-8 lg:items-start lg:absolute lg:bg-gray-50 lg:rounded-lg lg:py-4 lg:px-6 lg:shadow-lg top-2"
-								style="z-index: 999999999"
-								x-show="isSubMenuOpen"
-								@click.outside="isSubMenuOpen = false"
-							>
-								<a href="/pages/employment_test.html" class="font-semibold whitespace-nowrap"> Employment test</a>
-								<a href="/pages/recruitment.html" class="font-semibold"> Recruitment</a>
-							</div>
-						</div>
-
-						<a href="/#" class="bg-blue-900 px-10 font-bold text-white py-3 text-center rounded-lg shadow-lg"> Login</a>
-					</div>
-
-					<button class="lg:hidden" @click="isNavOpen = true">
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							class="h-10 w-10"
-							fill="none"
-							viewBox="0 0 24 24"
-							stroke="currentColor"
-							stroke-width="2"
-						>
-							<path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-						</svg>
-					</button>
-				</div>
-			</nav>
-
 			<!-- hero section -->
 			<section
 				style="background: url('/img/hero.png') center center/cover no-repeat; min-height: 80vh"
@@ -150,19 +56,6 @@
 						implemented in the Six Spotlight states, and has been led by the UNFPA/Spotlight implementing partner
 						working in such states.
 					</p>
-
-					<div class="flex justify-center items-center space-x-6">
-						<a
-							href="#"
-							class="px-10 py-3 font-semibold text-white rounded-lg text-center inline-block bg-yellow-500 border-2 border-yellow-500"
-							>Register</a
-						>
-						<a
-							href="#"
-							class="px-10 py-3 font-semibold text-yellow-500 rounded-lg text-center inline-block border-4 border-yellow-500"
-							>Read more...</a
-						>
-					</div>
 				</div>
 			</section>
 
@@ -202,27 +95,66 @@
 				</div>
 			</section>
 
-			<section class="p-4 my-4 md:my-12">
+			<section class="p-4 md:py-12 bg-sky-50">
 				<div class="max-w-2xl mx-auto">
 					<h3 class="text-lg md:text-2xl text-orange-600 font-semibold mb-4 text-center">
 						Age Distribution of Peers Reached
 					</h3>
-					<canvas id="ageChart" height="240">
+					<canvas id="ageChart" height="210">
 						<p>Fetching Age Data</p>
 					</canvas>
 				</div>
 			</section>
 
-			<section class="my-4 p-4">
+			<section class="px-4 py-6 md:py-12 bg-white">
 				<h3
 					class="text-xl uppercase text-center text-green-600 p-4 border-4 border-blue-600 rounded-md w-fit mx-auto -mb-6 bg-white relative z-20 font-bold"
 				>
 					LEADERBOARD
 				</h3>
-				<div class="max-w-3xl mx-auto relative rounded-xl pt-12 border-4 border-blue-600">
+				<div class="max-w-3xl mx-auto relative rounded-xl pt-12 border-4 border-blue-600 overflow-x-auto">
 					<table class="w-full sm:rounded-xl overflow-x-auto">
 						<tbody id="leaderboard" class="rounded-xl"></tbody>
 					</table>
+				</div>
+			</section>
+
+			<section class="px-4 py-6 lg:py-12 relative">
+				<img src="/img/top_bubbles.svg" alt="" class="absolute hidden md:block top-0 left-0" />
+
+				<img src="/img/bottom_bubbles.svg" alt="" class="absolute hidden md:block bottom-0 right-0" />
+				<h3 class="text-xl md:text-3xl text-orange-600 font-semibold mt-4 mb-8 md:mb-20 text-center">
+					Additional Data Captured
+				</h3>
+				<div
+					class="overflow-x-auto whitespace-nowrap space-x-4 md:space-x-8 max-w-5xl mx-auto md:flex md:justify-center z-10"
+				>
+					<div class="inline-block relative whitespace-normal">
+						<div class="absolute z-10 bg-black/50 top-0 left-0 w-full h-full rounded-md"></div>
+						<img src="/img/data_image1.png" class="h-80 md:h-96" />
+						<div class="absolute z-20 bg-white/30 bottom-0 left-0 w-full h-auto rounded-md p-2 text-orange-500">
+							<h4 class="font-semibold text-center text-xl md:text-3xl">PWD’s Reached</h4>
+							<p class="text-3xl md:text-4xl font-bold text-center mt-3">9</p>
+						</div>
+					</div>
+
+					<div class="inline-block relative whitespace-normal">
+						<div class="absolute z-10 bg-black/50 top-0 left-0 w-full h-full rounded-md"></div>
+						<img src="/img/data_image2.png" class="h-80 md:h-96" />
+						<div class="absolute z-20 bg-white/30 bottom-0 left-0 w-full h-auto rounded-md p-2 text-orange-500">
+							<h4 class="font-semibold text-center text-xl md:text-3xl">GBV Cases Reported</h4>
+							<p class="text-3xl font-bold md:text-4xl text-center mt-3">12</p>
+						</div>
+					</div>
+
+					<div class="inline-block relative whitespace-normal">
+						<div class="absolute z-10 bg-black/50 top-0 left-0 w-full h-full rounded-md"></div>
+						<img src="/img/data_image3.png" class="h-80 md:h-96" />
+						<div class="absolute z-20 bg-white/30 bottom-0 left-0 w-full h-auto rounded-md p-2 text-orange-500">
+							<h4 class="font-semibold text-center text-xl md:text-3xl">GBV Cases Referred</h4>
+							<p class="text-3xl font-bold md:text-4xl text-center mt-3">10</p>
+						</div>
+					</div>
 				</div>
 			</section>
 		</main>
@@ -250,21 +182,23 @@
 
 					const data = await res.json();
 
-					createTable(data.leaderBoardValues);
-
 					getLabeslAndValues(data.genderValues, {
 						type: "bar",
-						label: "Gender distribution",
-						backgroundColor: ["purple", "blue", "orange"],
+						label: null,
+						backgroundColor: ["#e600e6", "#3366ff", "#ffcc00"],
 						elementID: "genderChart",
+						showYaxis: true,
 					});
 
 					getLabeslAndValues(data.ageValues, {
 						type: "doughnut",
 						label: "Age distribution",
-						backgroundColor: ["pink", "blue", "orange", "green", "yellow"],
+						backgroundColor: ["#e60000", "#ff9933", "#47d147", "#0066ff", "#cc00ff"],
 						elementID: "ageChart",
+						showYaxis: false,
 					});
+
+					createTable(data.leaderBoardValues);
 
 					//	console.log(data);
 				} catch (error) {
@@ -278,7 +212,7 @@
 					// don't display the 1st row, that is the title rows
 					if (index === 0) return;
 					const tableRow = document.createElement("tr");
-					tableRow.classList = "odd:bg-blue-50 even:bg-gray-50  my-2";
+					tableRow.classList = "odd:bg-blue-50 even:bg-zinc-50  my-2";
 					const indexColoumn = document.createElement("td");
 					rank = index;
 					indexColoumn.innerHTML = getBadge(rank);
@@ -292,7 +226,9 @@
 							imgTag.classList = " h-12 w-12 mx-auto rounded-full border-4 border-blue-600";
 							tableColoumn.appendChild(imgTag);
 						} else {
-							tableColoumn.textContent = rowData;
+							const paragraphTag = document.createElement("p");
+							paragraphTag.textContent = rowData;
+							tableColoumn.appendChild(paragraphTag);
 						}
 						tableRow.appendChild(tableColoumn);
 					});
@@ -326,7 +262,7 @@
 			};
 
 			const createChart = (labels, values, options) => {
-				const { type, label, backgroundColor, elementID } = options;
+				const { type, label, backgroundColor, elementID, showYaxis } = options;
 
 				const ctx = document.getElementById(elementID).getContext("2d");
 
@@ -336,10 +272,9 @@
 						labels,
 						datasets: [
 							{
-								label,
+								label: "",
 								data: values,
 								backgroundColor,
-								borderWidth: 2,
 							},
 						],
 					},
@@ -347,6 +282,7 @@
 						scales: {
 							y: {
 								beginAtZero: true,
+								display: showYaxis,
 							},
 						},
 						plugins: {
