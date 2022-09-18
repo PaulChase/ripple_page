@@ -87,7 +87,7 @@
 			<section class="p-4 mt-20">
 				<div class="max-w-2xl mx-auto">
 					<h3 class="text-lg md:text-2xl text-orange-600 font-semibold mb-4 text-center">
-						Gender Distributiuon of Peers Educated
+						Gender Distribution of Peers Educated
 					</h3>
 					<canvas id="genderChart" height="240">
 						<p>Fetching Gender Data</p>
@@ -177,12 +177,17 @@
 			async function getSheet() {
 				try {
 					const res = await fetch(
-						"https://script.google.com/macros/s/AKfycbyVjgW-KV5mH_bN1trgV95C194TY-Et__VCU7KWzeZleAvUpbQd2seAsoWU9CdXE8oj/exec"
+						"https://script.google.com/macros/s/AKfycbweKf07JHTqdowigNMszCNJyHgQL20fc0t-a9fT6SOX_fRAF6tPg5Zd6yKbqq8I59Mv/exec"
 					);
 
 					const data = await res.json();
 
-					getLabeslAndValues(data.genderValues, {
+					const [genderLabels, genderValues] = data.genderData;
+
+					const [ageLabels, ageValues] = data.ageData;
+
+					// create gender bar chart
+					createChart(genderLabels, genderValues, {
 						type: "bar",
 						label: null,
 						backgroundColor: ["#e600e6", "#3366ff", "#ffcc00"],
@@ -190,15 +195,16 @@
 						showYaxis: true,
 					});
 
-					getLabeslAndValues(data.ageValues, {
+					// create age pie chart
+					createChart(ageLabels, ageValues, {
 						type: "doughnut",
 						label: "Age distribution",
-						backgroundColor: ["#e60000", "#ff9933", "#47d147", "#0066ff", "#cc00ff"],
+						backgroundColor: ["#5388D8", "#064776", "#E65B0B", "#00B45B", "#FF9F40"],
 						elementID: "ageChart",
 						showYaxis: false,
 					});
 
-					createTable(data.leaderBoardValues);
+					createTable(data.leaderBoardData);
 
 					//	console.log(data);
 				} catch (error) {
