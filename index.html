@@ -84,42 +84,18 @@
 				</div>
 			</div>
 
-			<section class="p-4 mt-20">
-				<div class="max-w-2xl mx-auto">
-					<h3 class="text-lg md:text-2xl text-orange-600 font-semibold mb-4 text-center">
-						Gender Distribution of Peers Educated
-					</h3>
-					<canvas id="genderChart" height="240">
-						<p>Fetching Gender Data</p>
-					</canvas>
-				</div>
-			</section>
-
-			<section class="p-4 md:py-12 bg-sky-50">
-				<div class="max-w-2xl mx-auto">
-					<h3 class="text-lg md:text-2xl text-orange-600 font-semibold mb-4 text-center">
-						Age Distribution of Peers Reached
-					</h3>
-					<canvas id="ageChart" height="210">
-						<p>Fetching Age Data</p>
-					</canvas>
-				</div>
-			</section>
-
-			<section class="px-4 py-6 md:py-12 bg-white">
+			<section class="px-4 py-6 md:py-24 mt-14 md:mt-0 bg-white overflow-x-auto">
 				<h3
 					class="text-xl uppercase text-center text-green-600 p-4 border-4 border-blue-600 rounded-md w-fit mx-auto -mb-6 bg-white relative z-20 font-bold"
 				>
 					LEADERBOARD
 				</h3>
-				<div class="max-w-3xl mx-auto relative rounded-xl pt-12 border-4 border-blue-600 overflow-x-auto">
-					<table class="w-full sm:rounded-xl overflow-x-auto">
-						<tbody id="leaderboard" class="rounded-xl"></tbody>
-					</table>
+				<div class="w-full md:max-w-3xl md:mx-auto relative rounded-xl pt-12 border-4 border-blue-600 overflow-x-auto">
+					<table id="leaderboard" class="w-full rounded-xl whitespace-nowrap text-sm md:text-base"></table>
 				</div>
 			</section>
 
-			<section class="px-4 py-6 lg:py-12 relative">
+			<!-- <section class="px-4 py-6 lg:py-12 relative">
 				<img src="/img/top_bubbles.svg" alt="" class="absolute hidden md:block top-0 left-0" />
 
 				<img src="/img/bottom_bubbles.svg" alt="" class="absolute hidden md:block bottom-0 right-0" />
@@ -156,7 +132,7 @@
 						</div>
 					</div>
 				</div>
-			</section>
+			</section> -->
 		</main>
 
 		<script>
@@ -177,36 +153,12 @@
 			async function getSheet() {
 				try {
 					const res = await fetch(
-						"https://script.google.com/macros/s/AKfycbweKf07JHTqdowigNMszCNJyHgQL20fc0t-a9fT6SOX_fRAF6tPg5Zd6yKbqq8I59Mv/exec"
+						"https://script.google.com/macros/s/AKfycbxuOHVN8-o6vHURCRh9NvKhUVx8sPxqY5-mFKw9eHA2Bar0lR9-KI-4s-otqMitxxwa/exec"
 					);
 
 					const data = await res.json();
 
-					const [genderLabels, genderValues] = data.genderData;
-
-					const [ageLabels, ageValues] = data.ageData;
-
-					// create gender bar chart
-					createChart(genderLabels, genderValues, {
-						type: "bar",
-						label: null,
-						backgroundColor: ["#e600e6", "#3366ff", "#ffcc00"],
-						elementID: "genderChart",
-						showYaxis: true,
-					});
-
-					// create age pie chart
-					createChart(ageLabels, ageValues, {
-						type: "doughnut",
-						label: "Age distribution",
-						backgroundColor: ["#5388D8", "#064776", "#E65B0B", "#00B45B", "#FF9F40"],
-						elementID: "ageChart",
-						showYaxis: false,
-					});
-
 					createTable(data.leaderBoardData);
-
-					//	console.log(data);
 				} catch (error) {
 					console.log(error);
 				}
@@ -225,11 +177,14 @@
 					tableRow.appendChild(indexColoumn);
 					row.forEach((rowData, index) => {
 						const tableColoumn = document.createElement("td");
-						tableColoumn.classList = ` text-gray-600 p-3 text-center  font-semibold last:font-extrabold`;
-						if (index === 0) {
+						tableColoumn.classList = ` text-gray-600 p-3 text-center  font-semibold last:font-extrabold last:text-lg whitespace-nowrap`;
+						if (index === 0 || index === 2) {
 							const imgTag = document.createElement("img");
 							imgTag.src = rowData;
-							imgTag.classList = " h-12 w-12 mx-auto rounded-full border-4 border-blue-600";
+							imgTag.classList =
+								index === 0
+									? " h-10 w-10 md:h-12  md:w-12 mx-auto rounded-full border-4 border-blue-600"
+									: "h-4 md:h-8 mx-auto";
 							tableColoumn.appendChild(imgTag);
 						} else {
 							const paragraphTag = document.createElement("p");
@@ -245,65 +200,16 @@
 			function getBadge(rank) {
 				switch (rank) {
 					case 1:
-						return `<img src="/img/badge1.png" class="h-12 w-12 mx-auto">`;
+						return `<img src="/img/badge1.png" class="md:h-12 h-8  mx-auto">`;
 					case 2:
-						return `<img src="/img/badge2.png" class="h-12 w-12 mx-auto">`;
+						return `<img src="/img/badge2.png" class="md:h-12 h-8  mx-auto">`;
 					case 3:
-						return `<img src="/img/badge3.png" class="h-12 w-12 mx-auto">`;
+						return `<img src="/img/badge3.png" class="md:h-12 h-8  mx-auto">`;
 
 					default:
 						return `<p class='text-center'>${rank}</p>`;
 				}
 			}
-
-			const getLabeslAndValues = (givenData, options) => {
-				let labels = [];
-				let values = [];
-				givenData.forEach((dataRow) => {
-					labels.push(dataRow[0]);
-					values.push(dataRow[1]);
-				});
-
-				createChart(labels, values, options);
-			};
-
-			const createChart = (labels, values, options) => {
-				const { type, label, backgroundColor, elementID, showYaxis } = options;
-
-				const ctx = document.getElementById(elementID).getContext("2d");
-
-				const myChart = new Chart(ctx, {
-					type,
-					data: {
-						labels,
-						datasets: [
-							{
-								label: "",
-								data: values,
-								backgroundColor,
-							},
-						],
-					},
-					options: {
-						scales: {
-							y: {
-								beginAtZero: true,
-								display: showYaxis,
-							},
-						},
-						plugins: {
-							legend: {
-								labels: {
-									// This more specific font property overrides the global property
-									font: {
-										size: 18,
-									},
-								},
-							},
-						},
-					},
-				});
-			};
 		</script>
 	</body>
 </html>
