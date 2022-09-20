@@ -177,13 +177,13 @@
 					tableRow.appendChild(indexColoumn);
 					row.forEach((rowData, index) => {
 						const tableColoumn = document.createElement("td");
-						tableColoumn.classList = ` text-gray-600 p-3 text-center  font-semibold last:font-extrabold last:text-lg whitespace-nowrap`;
+						tableColoumn.classList = ` text-gray-600 p-3 text-center  font-semibold last:font-extrabold last:text-lg `;
 						if (index === 0 || index === 2) {
 							const imgTag = document.createElement("img");
 							imgTag.src = rowData;
 							imgTag.classList =
 								index === 0
-									? " h-10 w-10 md:h-12  md:w-12 mx-auto rounded-full border-4 border-blue-600"
+									? " h-10 min-w-[2.5rem] md:h-12  md:w-12 mx-auto rounded-full border-4 border-blue-600"
 									: "h-4 md:h-8 mx-auto";
 							tableColoumn.appendChild(imgTag);
 						} else {
